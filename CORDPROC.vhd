@@ -38,10 +38,8 @@ architecture BHV of CORDIC_PROC is
 			clk: 					in std_logic;
 			LOAD: 					in std_logic;
 			k: 						in unsigned(integer(ceil(log2(real(N)))) downto 0);
-			dk_in : 				in std_logic;
 			ak: 					in signed(15 downto 0);
-			x_out, y_out, z_out: 	out signed(15 downto 0);
-			sign_z: 				out std_logic
+			x_out, y_out, z_out: 	out signed(15 downto 0)
 		);
 	end component;
 
@@ -53,9 +51,7 @@ architecture BHV of CORDIC_PROC is
 		    clk   : in std_logic;
 		    reset : in std_logic;
 		    start : in std_logic;
-			sign_z: in std_logic;
 			k_out : out unsigned(integer(ceil(log2(real(N)))) downto 0);
-			dk_out: out std_logic;
 			LOAD  : out std_logic;
 		    done  : out std_logic
 		);
@@ -64,8 +60,6 @@ architecture BHV of CORDIC_PROC is
 	--Internal Signals declaration
 	signal LOAD_i	: std_logic;
 	signal k_i		: unsigned(integer(ceil(log2(real(N)))) downto 0);
-	signal dk_i		: std_logic;
-	signal sign_z_i : std_logic;
 	signal ak_i		: signed(15 downto 0);
 	signal clk_i	: std_logic;
 	signal reset_i	: std_logic;
@@ -80,14 +74,13 @@ architecture BHV of CORDIC_PROC is
 		port map(
 			clk		=>	clk_i, 
 			reset	=>	reset_i, 
-			start	=>	start_i, 
-			sign_z	=>	sign_z_i, 
+			start	=>	start_i,
 			k_out	=>	k_i, 
-			dk_out 	=>	dk_i,
 			LOAD	=>	LOAD_i,
 			done	=>	done_i
 			);
 
+	--TODO: inside this IP there is a combinational loop
 	my_ALU: ALU
 		generic map(N => N)
 		port map(
@@ -98,12 +91,10 @@ architecture BHV of CORDIC_PROC is
 			clk		=>	clk_i,
 			LOAD	=>	LOAD_i,
 			k		=>	k_i,
-			dk_in	=>	dk_i,
 			ak		=>	ak_i,
 			x_out	=>	x_out,
 			y_out	=>	y_out,
-			z_out	=>	z_out,
-			sign_z	=>	sign_z_i
+			z_out	=>	z_out
 		);
 
 	my_ROM: ROM
@@ -115,10 +106,10 @@ architecture BHV of CORDIC_PROC is
 
     --TODO: this gets stuck during simulatiom
     --Internal signal assignment
-    INTERNAL: process(clk, reset, start) begin
+    process(clk, reset, start) begin
         clk_i       <=     clk;
         reset_i     <=     reset;
         start_i     <=     start;
-    end process INTERNAL;
+    end process;
 
 end architecture BHV;

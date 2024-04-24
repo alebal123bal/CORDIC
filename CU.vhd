@@ -13,9 +13,7 @@ entity CU is
         clk   : in std_logic;
         reset : in std_logic;
         start : in std_logic;
-        sign_z: in std_logic;
         k_out : out unsigned(integer(ceil(log2(real(N)))) downto 0);
-        dk_out: out std_logic;	--Signal that decides whether to add or subract
         LOAD  : out std_logic;
         done  : out std_logic
     );
@@ -68,16 +66,6 @@ begin
 
 	process(k) begin
 		k_out <= to_unsigned(k, k_out'length);
-	end process;	
-	
-	process(sign_z) begin
-		if sign_z = '0' then
-			dk_out <= '0';
-		elsif sign_z = '1' then 
-			dk_out <= '1';
-		else
-			dk_out <= '0';
-		end if;
 	end process;
 
 	
