@@ -18,7 +18,8 @@ entity ROM is
 end ROM;
 
 architecture BHV of ROM is
-	signal content: WORK.cordpack.T_CORDANGLE(N downto 0) := WORK.cordpack.F_CORDANGLE(WORK.cordpack.SA);
+    --TODO: mismatch on the size; sad naming of same variable N
+	--signal content: WORK.cordpack.T_CORDANGLE(N downto 0) := WORK.cordpack.F_CORDANGLE(WORK.cordpack.SA);
 	begin
 		process(k) begin
 			ak <= content(to_integer(k));

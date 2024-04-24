@@ -12,7 +12,6 @@ entity CORDIC_PROC is
 	port(
 		x_in, y_in, z_in	: 		in signed(15 downto 0);
 		clk, reset, start	: 		in std_logic;
-		angle				:		in signed(15 downto 0);	--Z angle
 		x_out, y_out, z_out : 		out signed(15 downto 0)
 	);
 end CORDIC_PROC;

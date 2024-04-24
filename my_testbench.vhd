@@ -17,7 +17,6 @@ architecture BHV of my_tb is
 		port(
 			x_in, y_in, z_in	: 		in signed(15 downto 0);
 			clk, reset, start	: 		in std_logic;
-			angle				:		in signed(15 downto 0);	--Z angle
 			x_out, y_out, z_out : 		out signed(15 downto 0)
 		);
 	end component;
@@ -52,5 +51,18 @@ architecture BHV of my_tb is
 			end loop;
 			
 		end process;
+
+        my_TOP: CORDIC_PROC
+            generic map(N => 15)
+            port map(
+                x_in    =>  x_i,
+                y_in    =>  y_i,
+                z_in    =>  z_i,
+                clk     =>  clk_i,
+                reset   =>  reset_i,
+                start   =>  start_i
+
+            );
+
 
 end architecture BHV;
