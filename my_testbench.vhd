@@ -21,7 +21,7 @@ architecture BHV of my_tb is
 		);
 	end component;
 
-	constant test_angle: real := 37.0;
+	constant test_angle: real := 37.0 / 256.0;
 
 	--Test signals 
 	signal x_i, y_i, z_i	:	signed(15 downto 0);
@@ -32,12 +32,19 @@ architecture BHV of my_tb is
 	begin
 
 		process begin
-		x_i	<=	to_signed(integer(1.0 / 2.0**15), 16);
+		x_i	<=	to_signed(integer(1.0 * 2.0**15), 16);
 		y_i	<=	(others => '0');
-		z_i	<=	to_signed(integer(test_angle / 2.0**15), 16);
+		z_i	<=	to_signed(integer(test_angle * 2.0**15), 16);
 		
 		reset_i	<= '1';
 		--Reset
+        wait for 5ns;
+        reset_i	<= '0';
+        start_i <= '1';
+        wait for 5ns;
+        start_i <= '0';
+        wait for 100ns;
+        std.env.stop(0);
 		
 		end process;
 

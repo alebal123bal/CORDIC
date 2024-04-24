@@ -13,10 +13,10 @@ entity CU is
         clk   : in std_logic;
         reset : in std_logic;
         start : in std_logic;
-	sign_z: in std_logic;
-	k_out : out unsigned(integer(ceil(log2(real(N)))) downto 0);
-	dk_out: out std_logic;	--Signal that decides whether to add or subract
-	LOAD  : out std_logic;
+        sign_z: in std_logic;
+        k_out : out unsigned(integer(ceil(log2(real(N)))) downto 0);
+        dk_out: out std_logic;	--Signal that decides whether to add or subract
+        LOAD  : out std_logic;
         done  : out std_logic
     );
 end entity CU;
