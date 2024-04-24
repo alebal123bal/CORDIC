@@ -20,7 +20,7 @@ entity CU is
 end entity CU;
 
 architecture BHV of CU is
-    type state_type is (IDLE, ITERATE, FINISH);
+    type state_type is (IDLE, ITERATE, FINISHED);
     signal state : state_type;
     signal k : integer range 0 to N-1;
 begin
@@ -36,21 +36,27 @@ begin
                 when IDLE =>
                     if start = '1' then
                         state <= ITERATE;
-                        k <= 0;
+                    else 
+                        state <= IDLE;
                     end if;
+
+                    k <= 0;
                     done <= '0';
 		            LOAD <= '0';
                     
                 when ITERATE =>
                     if k < N-1 then
                         k <= k + 1;
+                        state <= ITERATE;
                     else
-                        state <= FINISH;
+                        k <= 0;
+                        state <= FINISHED;
                     end if;
+                    
                     done <= '0';	
 		            LOAD <= '0';
                     
-                when FINISH =>
+                when FINISHED =>
                     state <= IDLE;
                     done  <= '1';		
             		LOAD <= '0';
