@@ -59,7 +59,7 @@ architecture BHV of my_tb is
 			
 		end process;
 
-        my_TOP: CORDIC_PROC
+        my_CORDIC: CORDIC_PROC
             generic map(N => 15)
             port map(
                 x_in    =>  x_i,

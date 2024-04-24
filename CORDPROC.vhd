@@ -73,6 +73,7 @@ architecture BHV of CORDIC_PROC is
 	signal done_i	: std_logic;
 
 	begin
+
 	--Component mapping
 	my_CU: CU 
 		generic map(N => N) 
@@ -112,5 +113,12 @@ architecture BHV of CORDIC_PROC is
 			ak		=>	ak_i
 		);
 
+    --TODO: this gets stuck during simulatiom
+    --Internal signal assignment
+    INTERNAL: process(clk, reset, start) begin
+        clk_i       <=     clk;
+        reset_i     <=     reset;
+        start_i     <=     start;
+    end process INTERNAL;
 
-end BHV;
+end architecture BHV;

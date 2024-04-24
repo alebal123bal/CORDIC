@@ -5,7 +5,7 @@ use IEEE.math_real.all;
 use IEEE.math_real."ceil";
 use IEEE.math_real."log2";
 
-use WORK.cordpack.all;
+--use WORK.cordpack.all;
 
 entity ROM is
 	generic (
