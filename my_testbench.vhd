@@ -22,7 +22,7 @@ architecture BHV of my_tb is
 	end component;
 
 	constant test_angle: real := 37.0 / 256.0;
-	constant NORM: real := 2.0;
+	constant NORM: real := 16.0;
 
 	--Test signals 
 	signal x_i, y_i, z_i	:	signed(15 downto 0);
@@ -45,7 +45,7 @@ architecture BHV of my_tb is
         start_i <= '1';
         wait for 5ns;
         start_i <= '0';
-        wait for 300ns;
+        wait for 200ns;
         std.env.stop(0);
 		
 		end process;
