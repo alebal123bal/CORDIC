@@ -25,6 +25,7 @@ architecture BHV of ROM is
     --Angles are normalized by a division of 256
     
     type array_type is array (0 to 15) of signed(15 downto 0);
+    --Divided by 2 for continuity with the x and y norm by 2
     signal content_norm_2: array_type := 
     (
         x"0B40",
