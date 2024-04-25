@@ -12,7 +12,8 @@ entity CORDIC_PROC is
 	port(
 		x_in, y_in, z_in	: 		in signed(15 downto 0);
 		clk, reset, start	: 		in std_logic;
-		x_out, y_out, z_out : 		out signed(15 downto 0)
+		x_out, y_out, z_out : 		out signed(15 downto 0);
+		done				:		out std_logic
 	);
 end CORDIC_PROC;
 
@@ -64,7 +65,6 @@ architecture BHV of CORDIC_PROC is
 	signal clk_i	: std_logic;
 	signal reset_i	: std_logic;
 	signal start_i	: std_logic;
-	signal done_i	: std_logic;
 
 	begin
 
@@ -77,7 +77,7 @@ architecture BHV of CORDIC_PROC is
 			start	=>	start_i,
 			k_out	=>	k_i, 
 			LOAD	=>	LOAD_i,
-			done	=>	done_i
+			done	=>	done
 			);
 
 	--TODO: inside this IP there is a combinational loop
@@ -104,7 +104,6 @@ architecture BHV of CORDIC_PROC is
 			ak		=>	ak_i
 		);
 
-    --TODO: this gets stuck during simulatiom
     --Internal signal assignment
     process(clk, reset, start) begin
         clk_i       <=     clk;

@@ -17,11 +17,12 @@ architecture BHV of my_tb is
 		port(
 			x_in, y_in, z_in	: 		in signed(15 downto 0);
 			clk, reset, start	: 		in std_logic;
-			x_out, y_out, z_out : 		out signed(15 downto 0)
+			x_out, y_out, z_out : 		out signed(15 downto 0);
+			done				:		out std_logic
 		);
 	end component;
 
-	constant test_angle: real := 37.0 / 256.0;
+	constant test_angle: real := 22.0 / 256.0;
 	constant NORM: real := 2.0;		--Dont forget to change ROM content too
 
 	--Test signals 
@@ -29,6 +30,8 @@ architecture BHV of my_tb is
 	signal reset_i			:	std_logic;
 	signal start_i			:	std_logic;
 	signal clk_i			:	std_logic;
+	signal done_i			:	std_logic;
+	signal y_out_i			:	signed(15 downto 0);
 
 	begin
 
@@ -45,9 +48,10 @@ architecture BHV of my_tb is
         start_i <= '1';
         wait for 5ns;
         start_i <= '0';
-        wait for 200ns;
-        std.env.stop(0);
 		
+		wait for 180ns;
+		std.env.stop(0);
+
 		end process;
 
 		
@@ -58,8 +62,29 @@ architecture BHV of my_tb is
 			clk_i	<=	'1';
 			wait for 5ns;
 			end loop;
-			
 		end process;
+
+		
+		correct_checker: process(done_i) 
+		variable normalized_result	:	real;
+		variable correct_result		:	real;
+		variable abso_error			:	real;
+		begin
+			if done_i'event and done_i = '0' then
+				--Check that y_out_i converted to integer and normalized by a constant, minus sin(z_in) is less that 0.001
+				normalized_result	:=	real(to_integer(y_out_i)) / 32768.0 / 1.6468;
+				correct_result		:=	sin(22.0 * MATH_PI / 180.0);
+				abso_error			:=	abs(normalized_result - correct_result);
+				report "Your numba is " & real'image(normalized_result);
+				report "Correct numba is " & real'image(correct_result);
+				report "Absolute error of " & real'image(abso_error);
+
+				if abso_error < 0.001 then
+					report "PASS";
+				end if;
+			end if;
+		end process;
+
 
         my_CORDIC: CORDIC_PROC
             generic map(N => 15)
@@ -69,13 +94,12 @@ architecture BHV of my_tb is
                 z_in    =>  z_i,
                 clk     =>  clk_i,
                 reset   =>  reset_i,
-                start   =>  start_i
+                start   =>  start_i,
+				done	=> 	done_i,
+
+				y_out	=> 	y_out_i
 
             );
-
-		correct_checker: process begin
-			
-		end process;
 
 
 end architecture BHV;
