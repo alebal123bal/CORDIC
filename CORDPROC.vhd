@@ -7,7 +7,7 @@ use IEEE.math_real."log2";
 
 entity CORDIC_PROC is
 	generic(
-		N: positive := 15	--Number of iterations; precision is fixed by specs	
+		N: positive := 15	--Number of iterations; precision is fixed by specs: useless, will be deleted	
 	);
 	port(
 		x_in, y_in, z_in	: 		in signed(15 downto 0);
@@ -80,7 +80,6 @@ architecture BHV of CORDIC_PROC is
 			done	=>	done
 			);
 
-	--TODO: inside this IP there is a combinational loop
 	my_ALU: ALU
 		generic map(N => N)
 		port map(
