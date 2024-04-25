@@ -43,13 +43,14 @@ architecture BHV of ALU is
 		end process;
 		
 		--Assign output signals/MUX memory signals
-		--TODO: found the combinational loop due to dk_in
 		process(xk, yk, zk, ak) begin
-			if zo(zo'left) = '0' then 
+			--Watch out that this can be wrong at first iteration, as zo is XXXX and so it adds, but it really should sub
+			--Use zk instead
+			if zk(zk'left) = '0' then 
 				xo <= xk - shift_right(yk, to_integer(k));
 				yo <= yk + shift_right(xk, to_integer(k));
 				zo <= zk - ak;
-			else  
+			else
 				xo <= xk + shift_right(yk, to_integer(k));
 				yo <= yk - shift_right(xk, to_integer(k));
 				zo <= zk + ak;
