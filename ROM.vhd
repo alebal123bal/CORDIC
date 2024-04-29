@@ -8,11 +8,8 @@ use IEEE.math_real."log2";
 --use WORK.cordpack.all;
 
 entity ROM is
-	generic (
-        N : positive := 15  -- Default value for N clock cycles
-    );
 	port(
-	k: in unsigned(integer(ceil(log2(real(N)))) downto 0);
+	k: in unsigned(4 downto 0);
 	ak: out signed(15 downto 0)
 	);
 end ROM;

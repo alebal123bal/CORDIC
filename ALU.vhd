@@ -5,16 +5,13 @@ use IEEE.math_real.all;
 use IEEE.math_real."ceil";
 use IEEE.math_real."log2";
 
-entity ALU is 
-    generic (
-        N : positive := 15  -- Needed to retreive k length
-    );
+entity ALU is
 port(
 	x_in, y_in, z_in: 		in signed(15 downto 0);
 	reset: 					in std_logic;
 	clk: 					in std_logic;
 	LOAD: 					in std_logic;
-	k: 						in unsigned(integer(ceil(log2(real(N)))) downto 0);
+	k: 						in unsigned(4 downto 0);
 	ak: 					in signed(15 downto 0);
 	x_out, y_out, z_out: 	out signed(15 downto 0)
 );

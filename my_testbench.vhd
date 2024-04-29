@@ -11,9 +11,6 @@ end entity my_tb;
 architecture BHV of my_tb is
 
 	component  CORDIC_PROC is
-		generic(
-			N: positive := 15	--Number of iterations; precision is fixed by specs	
-		);
 		port(
 			x_in, y_in, z_in	: 		in signed(15 downto 0);
 			clk, reset, start	: 		in std_logic;
@@ -87,7 +84,6 @@ architecture BHV of my_tb is
 
 
         my_CORDIC: CORDIC_PROC
-            generic map(N => 15)
             port map(
                 x_in    =>  x_i,
                 y_in    =>  y_i,
