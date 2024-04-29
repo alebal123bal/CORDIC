@@ -38,15 +38,15 @@ architecture BHV of my_tb is
 		y_i	<=	(others => '0');
 		z_i	<=	to_signed(integer((test_angle / NORM) * 2.0**15), 16);
 		
-		reset_i	<= '1';
 		--Reset
-        wait for 5ns;
+		reset_i	<= '1';
+        wait for 50ns;
         reset_i	<= '0';
         start_i <= '1';
-        wait for 5ns;
+        wait for 10ns;
         start_i <= '0';
 		
-		wait for 180ns;
+		wait for 250ns;
 		std.env.stop(0);
 
 		end process;
@@ -67,9 +67,9 @@ architecture BHV of my_tb is
 		variable correct_result		:	real;
 		variable abso_error			:	real;
 		begin
-			if done_i'event and done_i = '0' then
+			if done_i = '1' then
 				--Check that y_out_i converted to integer and normalized by a constant, minus sin(z_in) is less that 0.001
-				normalized_result	:=	real(to_integer(y_out_i)) / 32768.0 / 1.6468;
+				normalized_result	:=	real(to_integer(y_out_i)) / 16384.0 / 1.6468;
 				correct_result		:=	sin(22.0 * MATH_PI / 180.0);
 				abso_error			:=	abs(normalized_result - correct_result);
 				report "Your numba is " & real'image(normalized_result);

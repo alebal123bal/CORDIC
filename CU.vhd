@@ -25,38 +25,42 @@ begin
     begin
         if reset = '1' then
             state <= IDLE;
+            LOAD <= '1';
             k <= 0;
             done  <= '0';
-            LOAD <= '1';
         elsif rising_edge(clk) then
             case state is
                 when IDLE =>
                     if start = '1' then
                         state <= ITERATE;
+                        LOAD <= '0';
                     else 
                         state <= IDLE;
+                        LOAD <=  '1';
                     end if;
 
-                    k <= 0;
-                    done <= '0';
-		            LOAD <= '0';
+                    k       <=      0;
+                    done    <=      '0';
                     
                 when ITERATE =>
                     if k < 16-1 then
-                        k <= k + 1;
-                        state <= ITERATE;
+                        if k = 14 then
+                            done    <=  '1';		
+                        else
+                            done    <=  '0';	
+                        end if;
+                        k       <=    k + 1;
+                        state   <=    ITERATE;
                     else
-                        k <= 0;
-                        state <= FINISHED;
+                        k       <=  0;
+                        state   <=  FINISHED;
+                        done    <=  '0';
                     end if;
                     
-                    done <= '0';	
-		            LOAD <= '0';
-                    
                 when FINISHED =>
-                    state <= IDLE;
-                    done  <= '1';		
-            		LOAD <= '0';
+                    k       <=    0;
+                    state   <=    IDLE;
+                    done    <=    '0';
 			end case;
     end if;
     end process;
